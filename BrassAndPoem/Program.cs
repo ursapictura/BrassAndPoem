@@ -156,7 +156,7 @@ void AddProduct(List<Product> products, List<ProductType> productTypes)
     Product newProduct = new Product(productName, productPrice, productTypeId);
     products.Add(newProduct);
 
-    Console.WriteLine("${productName} has been added to the Brass and Poems inventory.");
+    Console.WriteLine($"{productName} has been added to the Brass and Poems inventory.");
 }
 
 void UpdateProduct(List<Product> products, List<ProductType> productTypes)
