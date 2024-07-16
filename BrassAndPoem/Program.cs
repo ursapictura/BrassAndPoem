@@ -1,5 +1,6 @@
 ﻿
 //create a "products" variable here to include at least five Product instances. Give them appropriate ProductTypeIds.
+using System.Runtime.InteropServices;
 using BrassAndPoem;
 
 List<Product> products = new List<Product>()
@@ -74,7 +75,7 @@ void DisplayAllProducts(List<Product> products, List<ProductType> productTypes)
 {
     for (int i = 0; i < products.Count; i++)
     {
-        Console.WriteLine($"{i + 1}. {products[i].Name} in the {productTypes.FirstOrDefault(p => p.Id == products[i].ProductTypeId).Title} category is available for {products[i].Price}.");
+        Console.WriteLine($"{i + 1}. {products[i].Name} in the {productTypes.FirstOrDefault(p => p.Id == products[i].ProductTypeId).Title} category is available for ${products[i].Price}.");
     };
 }
 
@@ -160,7 +161,107 @@ void AddProduct(List<Product> products, List<ProductType> productTypes)
 
 void UpdateProduct(List<Product> products, List<ProductType> productTypes)
 {
-    throw new NotImplementedException();
+    Console.WriteLine("Which product would you like to make changes to?");
+    DisplayAllProducts(products, productTypes);
+
+    int productIndex;
+    while(true)
+    {
+        if (Int32.TryParse(Console.ReadLine(), out int productNumber)
+            && productNumber > 0
+            && productNumber <= products.Count)
+        {
+            productIndex = productNumber - 1;
+            break;
+        }
+        else
+        {
+            Console.WriteLine("Your entry was invalid. Please enter the numeric value of the product you want to update.");
+        }
+        
+    }
+
+    Console.Clear();
+    Console.WriteLine($"What is the updated name of {products[productIndex].Name}?");
+    string productName = products[productIndex].Name;
+    while (true)
+    {
+        string choice = Console.ReadLine();
+        if (choice == "")
+        {
+            productName = products[productIndex].Name;
+            break;
+        }
+        else 
+        {
+
+            productName = choice;
+            break;
+        }
+    }
+
+    Console.Clear();
+    Console.WriteLine($"What is the updated price for {productName}?. Current price: {products[productIndex].Price}");
+    decimal productPrice = products[productIndex].Price;
+    while(true)
+    {
+        string choice = Console.ReadLine();
+        if (decimal.TryParse(choice, out productPrice))
+        {
+            break;
+        }
+        else if (choice == "")
+        {
+            productPrice = products[productIndex].Price;
+            break;
+        }
+        else
+        {
+            Console.WriteLine($"Your entry was invalid. Please enter the numerical price of {productName}.");
+        }
+    }
+
+    Console.Clear();
+    Console.WriteLine(@$"What is the updated category for {productName}. Current category {productTypes.FirstOrDefault(p => p.Id == products[productIndex].ProductTypeId).Title}?
+    1. poetry
+    2. brass instrument");
+
+    int productTypeId = products[productIndex].ProductTypeId;
+    while(true)
+    {
+        string choice = Console.ReadLine();
+        if (Int32.TryParse(choice, out productTypeId))
+        {
+            break;
+        }
+        else if (choice == "")
+        {
+            productTypeId = products[productIndex].ProductTypeId;
+            break;
+        }
+        else if (choice.ToLower() == "poetry")
+        {
+            productTypeId = 1;
+            break;
+        }
+        else if (choice.ToLower() == "brass"
+                || choice.ToLower() == "brass instrument"
+                || choice.ToLower() == "instrument")
+        {
+            productTypeId = 2;
+            break;
+        }
+        else
+        {
+            Console.WriteLine($"Your entry was invalid. Please enter the numerical price of {productName}.");
+        }
+    }
+
+    products[productIndex].Name = productName;
+    products[productIndex].Price = productPrice;
+    products[productIndex].ProductTypeId = productTypeId;
+
+    Console.WriteLine($"{products[productIndex].Name} is now in category {productTypes.FirstOrDefault(p => p.Id == products[productIndex].ProductTypeId).Title} for ${products[productIndex].Price}.");
 }
 
 // don't move or change this!
